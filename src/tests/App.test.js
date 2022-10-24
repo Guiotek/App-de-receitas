@@ -1,5 +1,6 @@
 import { act, screen } from '@testing-library/react';
 import React from 'react';
+import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithContext from './renderWithContext';
 
@@ -16,5 +17,14 @@ describe('Implementa testes na tela de Login', () => {
     expect(inputEmail).toBeInTheDocument();
     expect(inputPassword).toBeInTheDocument();
     expect(btnEnter).toBeInTheDocument();
+
+    expect(btnEnter).toBeDisabled();
+
+    userEvent.type(inputEmail, 'teste@teste.com');
+    userEvent.type(inputPassword, '1234567');
+
+    expect(btnEnter).toBeEnabled();
+
+    userEvent.click(btnEnter);
   });
 });
