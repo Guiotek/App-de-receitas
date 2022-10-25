@@ -29,6 +29,7 @@ describe('Implementa testes na tela de Login', () => {
   });
 });
 
+
 describe('Implementa testes no Header', () => {
   test('Testa elementos no Header', () => {
     act(() => {
@@ -50,5 +51,17 @@ describe('Implementa testes no Header', () => {
     userEvent.click(searchBtn);
 
     expect(screen.getByTestId('search-input')).toBeInTheDocument();
+
+describe('Implementa testes no componente Footer', () => {
+  test('Testa elementos na tela', () => {
+    act(() => {
+      renderWithContext(<App />);
+    });
+
+    const mealIcon = screen.getByTestId('meals-bottom-btn');
+    const drinkIcon = screen.getByTestId('drink-bottom-btn');
+
+    expect(mealIcon).toBeInTheDocument();
+    expect(drinkIcon).toBeInTheDocument();
   });
 });
