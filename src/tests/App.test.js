@@ -57,7 +57,6 @@ describe('Implementa testes no componente Footer', () => {
     act(() => {
       renderWithContext(<App />);
     });
-
     const mealIcon = screen.getByTestId('meals-bottom-btn');
     const drinkIcon = screen.getByTestId('drink-bottom-btn');
 
