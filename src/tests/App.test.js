@@ -30,7 +30,7 @@ describe('Implementa testes na tela de Login', () => {
 });
 
 describe('Implementa testes no Header', () => {
-  test('Testa elementos no header', () => {
+  test('Testa elementos no Header', () => {
     act(() => {
       renderWithContext(<App />);
     });
