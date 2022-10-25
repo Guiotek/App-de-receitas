@@ -28,3 +28,17 @@ describe('Implementa testes na tela de Login', () => {
     userEvent.click(btnEnter);
   });
 });
+
+describe('Implementa testes no componente Footer', () => {
+  test('Testa elementos na tela', () => {
+    act(() => {
+      renderWithContext(<App />);
+    });
+
+    const mealIcon = screen.getByTestId('meals-bottom-btn');
+    const drinkIcon = screen.getByTestId('drink-bottom-btn');
+
+    expect(mealIcon).toBeInTheDocument();
+    expect(drinkIcon).toBeInTheDocument();
+  });
+});
