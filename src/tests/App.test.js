@@ -1,4 +1,4 @@
-import { act, screen } from '@testing-library/react';
+import { act, screen, within } from '@testing-library/react';
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
@@ -26,5 +26,29 @@ describe('Implementa testes na tela de Login', () => {
     expect(btnEnter).toBeEnabled();
 
     userEvent.click(btnEnter);
+  });
+});
+
+describe('Implementa testes no Header', () => {
+  test('Testa elementos no header', () => {
+    act(() => {
+      renderWithContext(<App />);
+    });
+    const linkProfile = screen.getByRole('link', {
+      name: /profile/i,
+    });
+    within(linkProfile).getByRole('img', {
+      name: /profile/i,
+    });
+
+    expect(linkProfile).toBeInTheDocument();
+
+    const searchBtn = screen.getByTestId('search-btn');
+
+    expect(searchBtn).toBeInTheDocument();
+
+    userEvent.click(searchBtn);
+
+    expect(screen.getByTestId('search-input')).toBeInTheDocument();
   });
 });
