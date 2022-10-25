@@ -50,6 +50,8 @@ describe('Implementa testes no Header', () => {
     userEvent.click(searchBtn);
 
     expect(screen.getByTestId('search-input')).toBeInTheDocument();
+  });
+});
 
 describe('Implementa testes no componente Footer', () => {
   test('Testa elementos na tela', () => {
