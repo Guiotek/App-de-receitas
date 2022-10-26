@@ -44,13 +44,13 @@ describe('Implementa testes na tela de Busca', () => {
     expect(nameRadio).toBeInTheDocument();
     expect(firstLetterRadio).toBeInTheDocument();
 
-    userEvent.type(inputSearch, 'pizza');
+    userEvent.type(inputSearch, 'tomato');
     userEvent.click(ingredientRadio);
     userEvent.click(btnSearch);
 
     expect(global.fetch).toHaveBeenCalled();
 
-    userEvent.type(inputSearch, 'tomato');
+    userEvent.type(inputSearch, 'pizza');
     userEvent.click(nameRadio);
     userEvent.click(btnSearch);
 
