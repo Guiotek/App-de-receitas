@@ -3,9 +3,9 @@ import React from 'react';
 // import SearchBar from '../components/SearchBar';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
-import renderWithRouter from './helpers/renderWithRouter';
+import renderWithContext from './renderWithContext';
 import meals from '../../cypress/mocks/meals';
-import drinks from '../../cypress/mocks/drinks';
+// import drinks from '../../cypress/mocks/drinks';
 
 afterEach(() => jest.clearAllMocks());
 
@@ -15,11 +15,9 @@ describe('Implementa testes na tela de Busca', () => {
       json: () => Promise.resolve(meals),
     }));
 
-    window.alert = jest.fn();
-
-    const { history } = renderWithRouter(<App />);
-
-    act(() => { history.push('/meals'); });
+    act(() => {
+      renderWithContext(<App />);
+    });
 
     const inputEmail = screen.getByTestId('email-input');
     const inputPassword = screen.getByTestId('password-input');
@@ -30,34 +28,23 @@ describe('Implementa testes na tela de Busca', () => {
 
     userEvent.click(btnEnter);
 
-    expect(history.location.pathname).toBe('/meals');
+    const showSearchBtn = screen.getByTestId('search-btn');
+    expect(showSearchBtn).toBeInTheDocument();
 
-    const searchBtn = screen.getByTestId('search-btn');
+    userEvent.click(showSearchBtn);
 
-    expect(searchBtn).toBeInTheDocument();
-
-    userEvent.click(searchBtn);
-
-    const searchInput = screen.getByTestId('search-input');
+    const inputSearch = screen.getByTestId('search-input');
     const ingredientRadio = screen.getByTestId('ingredient-search-radio');
     const nameRadio = screen.getByTestId('name-search-radio');
     const firstLetterRadio = screen.getByTestId('first-letter-search-radio');
-    const btnBusca = screen.getByRole('button', { name: /busca/i });
+    const btnSearch = screen.getByRole('button', { name: /busca/i });
 
-    expect(searchInput).toBeInTheDocument();
+    expect(inputSearch).toBeInTheDocument();
     expect(ingredientRadio).toBeInTheDocument();
     expect(nameRadio).toBeInTheDocument();
     expect(firstLetterRadio).toBeInTheDocument();
-    expect(btnBusca).toBeInTheDocument();
 
-    userEvent.type(searchInput, 'pizza');
-    userEvent.click(nameRadio);
-    userEvent.click(btnBusca);
-
-    expect(global.fetch).toBeCalled();
-    expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=');
-
-    userEvent.type(searchInput, 'cocoa');
+    userEvent.type(inputSearch, 'tomato');
     userEvent.click(ingredientRadio);
     userEvent.click(btnBusca);
 
@@ -70,36 +57,20 @@ describe('Implementa testes na tela de Busca', () => {
     expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
 
     userEvent.type(searchInput, 'xablê');
+    userEvent.click(btnSearch);
+
+    expect(global.fetch).toHaveBeenCalled();
+
+    userEvent.type(inputSearch, 'pizza');
     userEvent.click(nameRadio);
-    userEvent.click(btnBusca);
+    userEvent.click(btnSearch);
 
-    expect(window.alert).toBeCalled();
+    expect(global.fetch).toHaveBeenCalledTimes(2);
 
-    userEvent.type(searchInput, 'kkkkk');
+    userEvent.type(inputSearch, 't');
     userEvent.click(firstLetterRadio);
-    userEvent.click(btnBusca);
+    userEvent.click(btnSearch);
 
-    expect(window.alert).toBeCalled();
-
-    act(() => { history.push('/drinks'); });
-    expect(history.location.pathname).toBe('/drinks');
-
-    userEvent.type(searchInput, 'water');
-    userEvent.click(nameRadio);
-    userEvent.click(btnBusca);
-
-    expect(history.location.pathname).toBe('/drinks');
-  });
-});
-
-describe('Implementa testes', () => {
-  test('Testa', async () => {
-    global.fetch = jest.fn(() => Promise.resolve({
-      json: () => Promise.resolve(drinks),
-    }));
-
-    const { history } = renderWithRouter(<App />);
-
-    act(() => { history.push('/drinks'); });
+    expect(global.fetch).toHaveBeenCalledTimes(2);
   });
 });
