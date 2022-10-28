@@ -69,10 +69,6 @@ describe('Implementa testes na tela de Busca', () => {
 
     expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
 
-    const padSee = await screen.findByText(/pad see ew/i);
-
-    expect(padSee).toBeInTheDocument();
-
     userEvent.type(searchInput, 'xablê');
     userEvent.click(nameRadio);
     userEvent.click(btnBusca);
