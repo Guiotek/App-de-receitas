@@ -46,6 +46,17 @@ describe('Implementa testes na tela de Busca', () => {
 
     userEvent.type(inputSearch, 'tomato');
     userEvent.click(ingredientRadio);
+    userEvent.click(btnBusca);
+
+    expect(global.fetch).toHaveBeenCalledTimes(6);
+
+    userEvent.type(searchInput, 'p');
+    userEvent.click(firstLetterRadio);
+    userEvent.click(btnBusca);
+
+    expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
+
+    userEvent.type(searchInput, 'xablê');
     userEvent.click(btnSearch);
 
     expect(global.fetch).toHaveBeenCalled();
