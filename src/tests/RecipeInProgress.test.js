@@ -5,8 +5,12 @@ import App from '../App';
 
 describe('Implementa testes na tela de Busca', () => {
   test('Testa elementos na tela', async () => {
-    renderWithRouter(<App />, { initialEntries: ['/meals/52977/in-progress'] });
+    const { history } = renderWithRouter(<App />, { initialEntries: ['/meals/52977/in-progress'] });
+
+    console.log(history);
 
     const btnShare = screen.getByRole('button', { name: /compartilhar/i });
+
+    expect(btnShare).toBeInTheDocument();
   });
 });
