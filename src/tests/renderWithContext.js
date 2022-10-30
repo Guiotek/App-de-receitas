@@ -1,12 +1,16 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+import { createMemoryHistory } from 'history';
 import Provider from '../context/Provider';
+import App from '../App';
 
-export default function renderWithContext(children) {
+export default function renderWithContext() {
+  const history = createMemoryHistory();
+
   return (
     render(
-      <Provider>
-        { children }
+      <Provider history={ history }>
+        <App />
       </Provider>,
     )
   );
