@@ -1,14 +1,12 @@
 import React from 'react';
-import { act, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
-import renderWithContext from './renderWithContext';
+import renderWithRouter from './helpers/renderWithRouter';
 
 describe('testa Profile', () => {
   test('Profile elements', () => {
-    act(() => {
-      renderWithContext(<App />);
-    });
+    renderWithRouter(<App />, '/');
 
     const email = screen.getByTestId('email-input');
     const password = screen.getByTestId('password-input');
@@ -45,9 +43,7 @@ describe('testa Profile', () => {
 
 describe('Profile tests', () => {
   test('testa funcinalidades', () => {
-    act(() => {
-      renderWithContext(<App />);
-    });
+    renderWithRouter(<App />, '/profile');
 
     const buttonDoneRecipes = screen.getByTestId('profile-done-btn');
 
