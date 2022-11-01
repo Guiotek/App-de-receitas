@@ -1,16 +1,19 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import React from 'react';
+// import userEvent from '@testing-library/user-event';
+// import { act } from 'react-dom/test-utils';
 import renderWithRouter from './helpers/renderWithRouter';
 import App from '../App';
+import oneMeal from '../../cypress/mocks/oneMeal';
 
 describe('Implementa testes na tela de Busca', () => {
   test('Testa elementos na tela', async () => {
-    const { history } = renderWithRouter(<App />, { initialEntries: ['/meals/52977/in-progress'] });
+    global.fetch = jest.fn(() => Promise.resolve({
+      json: () => Promise.resolve(oneMeal),
+    }));
 
-    console.log(history);
-
-    const btnShare = screen.getByRole('button', { name: /compartilhar/i });
-
-    expect(btnShare).toBeInTheDocument();
+    const { history } = renderWithRouter(<App />, '/meals/52977/in-progress');
+    await waitFor(() => expect(history.location.pathname).toBe('/meals/52977/in-progress'));
+    await waitFor(() => expect(screen.getByTestId('share-btn')).toBeInTheDocument());
   });
 });

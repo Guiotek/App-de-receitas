@@ -2,24 +2,18 @@ import React from 'react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { render } from '@testing-library/react';
+import Provider from '../../context/Provider';
 
-function withRouter(component, history) {
-  return (
-    <Router history={ history }>
-      { component }
-    </Router>
-  );
-}
-
-function renderWithRouter(
-  component,
-  {
-    initialEntries = ['/'],
-    history = createMemoryHistory({ initialEntries }),
-  } = {},
-) {
+function renderWithRouter(component, path = '/') {
+  const history = createMemoryHistory({ initialEntries: [path] });
   return {
-    ...render(withRouter(component, history)),
+    ...render(
+      <Provider>
+        <Router history={ history }>
+          {component}
+        </Router>
+      </Provider>,
+    ),
     history,
   };
 }

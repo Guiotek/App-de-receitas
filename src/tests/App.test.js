@@ -1,14 +1,12 @@
-import { act, screen, within } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
-import renderWithContext from './renderWithContext';
+import renderWithRouter from './helpers/renderWithRouter';
 
 describe('Implementa testes na tela de Login', () => {
   test('Testa elementos na tela', () => {
-    act(() => {
-      renderWithContext(<App />);
-    });
+    renderWithRouter(<App />, '/');
 
     const inputEmail = screen.getByTestId('email-input');
     const inputPassword = screen.getByTestId('password-input');
@@ -31,9 +29,8 @@ describe('Implementa testes na tela de Login', () => {
 
 describe('Implementa testes no Header', () => {
   test('Testa elementos no Header', () => {
-    act(() => {
-      renderWithContext(<App />);
-    });
+    renderWithRouter(<App />, '/meals');
+
     const linkProfile = screen.getByRole('link', {
       name: /profile/i,
     });
@@ -55,9 +52,8 @@ describe('Implementa testes no Header', () => {
 
 describe('Implementa testes no componente Footer', () => {
   test('Testa elementos na tela', () => {
-    act(() => {
-      renderWithContext(<App />);
-    });
+    renderWithRouter(<App />, '/meals');
+
     const mealIcon = screen.getByTestId('meals-bottom-btn');
     const drinkIcon = screen.getByTestId('drinks-bottom-btn');
 
