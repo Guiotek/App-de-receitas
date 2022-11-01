@@ -13,6 +13,7 @@ describe('Implementa testes na tela de Busca', () => {
     }));
 
     const { history } = renderWithRouter(<App />, '/meals/52977/in-progress');
+
     await waitFor(() => expect(history.location.pathname).toBe('/meals/52977/in-progress'));
     await waitFor(() => expect(screen.getByTestId('share-btn')).toBeInTheDocument());
   });
