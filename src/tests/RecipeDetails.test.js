@@ -1,49 +1,56 @@
+import { screen, waitFor } from '@testing-library/react';
 import React from 'react';
-import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import App from '../App';
-// import renderWithContext from './helpers/renderWithContext';
-import meals from '../../cypress/mocks/meals';
-// import drinks from '../../cypress/mocks/drinks';
+// import { act } from 'react-dom/test-utils';
 import renderWithRouter from './helpers/renderWithRouter';
+import App from '../App';
+import oneMeal from '../../cypress/mocks/oneMeal';
+import oneDrink from '../../cypress/mocks/oneDrink';
 
-afterEach(() => jest.clearAllMocks());
-
-describe('testa RecipeDetails', () => {
-  test('Verifica renderizações', async () => {
+describe('Implementa testes na tela de Busca', () => {
+  test('Testa elementos na tela de uma comida', async () => {
     global.fetch = jest.fn(() => Promise.resolve({
-      json: () => Promise.resolve(meals),
+      json: () => Promise.resolve(oneMeal),
     }));
 
-    const { history } = renderWithRouter(<App />);
+    const { history } = renderWithRouter(<App />, '/meals/52977');
 
-    act(() => { history.push('/meals'); });
+    await waitFor(() => expect(history.location.pathname).toBe('/meals/52977'));
+    await waitFor(() => expect(screen.getByTestId('share-btn')).toBeInTheDocument());
 
-    const inputEmail = screen.getByTestId('email-input');
-    const inputPassword = screen.getByTestId('password-input');
-    const btnEnter = screen.getByRole('button', { name: /enter/i });
+    const favoriteBtn = screen.getByTestId('favorite-btn');
 
-    userEvent.type(inputEmail, 'teste@teste.com');
-    userEvent.type(inputPassword, '1234567');
-    userEvent.click(btnEnter);
+    userEvent.click(favoriteBtn);
 
-    const searchBtn = screen.getByTestId('search-btn');
-    userEvent.click(searchBtn);
-    const searchInput = screen.getByTestId('search-input');
-    const nameRadio = screen.getByTestId('name-search-radio');
-    const btnBusca = screen.getByRole('button', { name: /busca/i });
-    userEvent.type(searchInput, 'pizza');
-    userEvent.click(nameRadio);
-    userEvent.click(btnBusca);
+    const startBtn = screen.getByTestId('start-recipe-btn');
 
-    // const image = screen.getByTestId('recipe-photo');
-    // const title = screen.getByTestId('recipe-title');
-    // const category = screen.getByTestId('recipe-category');
-    const ingredient1 = screen.getByTestId('1-ingredient-name-and-measure');
+    userEvent.click(startBtn);
 
-    // expect(image).toBeInTheDocument();
-    // expect(title).toBeInTheDocument();
-    // expect(category).toBeInTheDocument();
-    expect(ingredient1).toBeInTheDocument();
+    await waitFor(() => userEvent.click(favoriteBtn));
+
+    expect(global.fetch).toBeCalled();
+  });
+
+  test('Testa elementos na tela de uma bebida', async () => {
+    global.fetch = jest.fn(() => Promise.resolve({
+      json: () => Promise.resolve(oneDrink),
+    }));
+
+    const { history } = renderWithRouter(<App />, '/drinks/178319');
+
+    await waitFor(() => expect(history.location.pathname).toBe('/drinks/178319'));
+    await waitFor(() => expect(screen.getByTestId('share-btn')).toBeInTheDocument());
+
+    const favoriteBtn = screen.getByTestId('favorite-btn');
+
+    userEvent.click(favoriteBtn);
+
+    const startBtn = screen.getByTestId('start-recipe-btn');
+
+    userEvent.click(startBtn);
+
+    await waitFor(() => userEvent.click(favoriteBtn));
+
+    expect(global.fetch).toBeCalled();
   });
 });

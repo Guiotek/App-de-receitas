@@ -1,17 +1,15 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import renderWithRouter from './helpers/renderWithRouter';
 import App from '../App';
+// import { drinks } from '../../cypress/mocks/drinks';
 
-const searchButton = 'exec-search-btn';
+// const searchButton = 'exec-search-btn';
 const recip6 = '6-recipe-card';
 
 describe('Testando Tela principal de receitas', () => {
-  afterEach(() => jest.restoreAllMocks());
-
   it('Testa se renderiza 12 elementosl', async () => {
-    jest.spyOn(global, 'fetch');
     renderWithRouter(<App />);
 
     const mailPut = screen.getByTestId('email-input');
@@ -82,36 +80,24 @@ describe('Testando Tela principal de receitas', () => {
   });
 
   it('Testando /drink', async () => {
-    const { history } = renderWithRouter(<App />);
-    history.push('/meals');
-    expect(history.location.pathname).toBe('/meals');
-    const drinksBtn = screen.getByTestId('drinks-bottom-btn');
-    expect(drinksBtn).toBeInTheDocument();
-    userEvent.click(drinksBtn);
+    // global.fetch = jest.fn(() => Promise.resolve({
+    //   json: () => Promise.resolve(drinks),
+    // }));
 
-    const titulo = screen.getByRole('heading', { name: /drinks/i });
-    expect(titulo).toBeInTheDocument();
-    const drinksSearch = screen.getByTestId('search-top-btn');
-    userEvent.click(drinksSearch);
-    const drinksSearchPut = screen.getByTestId('search-input');
-    userEvent.type(drinksSearchPut, 'shake');
-    const name = screen.getByTestId('name-search-radio');
-    userEvent.click(name);
-    const searchingTest = screen.getByTestId(searchButton);
-    userEvent.click(searchingTest);
-    const recipe0 = await screen.findByTestId('0-recipe-card');
-    expect(recipe0).toBeInTheDocument();
-    const recipe1 = await screen.findByTestId('1-recipe-card');
-    expect(recipe1).toBeInTheDocument();
-    const recipe2 = await screen.findByTestId('2-recipe-card');
-    expect(recipe2).toBeInTheDocument();
-    const recipe3 = await screen.findByTestId('3-recipe-card');
-    expect(recipe3).toBeInTheDocument();
-    const recipe4 = await screen.findByTestId('4-recipe-card');
-    expect(recipe4).toBeInTheDocument();
-    const recipe5 = await screen.findByTestId('5-recipe-card');
-    expect(recipe5).toBeInTheDocument();
-    const recipe6 = await screen.findByTestId(recip6);
-    expect(recipe6).toBeInTheDocument();
+    const { history } = renderWithRouter(<App />, '/drinks');
+
+    await waitFor(() => expect(history.location.pathname).toBe('/drinks'));
+
+    const ordinaryFilter = await screen.findByRole('button', { name: /ordinary drink/i });
+
+    const allFilter = await screen.findByRole('button', { name: /all/i });
+
+    expect(allFilter).toBeInTheDocument();
+
+    userEvent.click(ordinaryFilter);
+
+    userEvent.click(ordinaryFilter);
+
+    userEvent.click(allFilter);
   });
 });
