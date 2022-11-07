@@ -55,17 +55,17 @@ describe('Testando Tela principal de receitas', () => {
     userEvent.click(btnClickBeef);
     const btnClickBeef2 = await screen.findByRole('heading', { name: /beef and mustard pie/i });
     expect(btnClickBeef2).toBeInTheDocument();
-    const btnClickBeef3 = await screen.getByRole('heading', { name: /beef and oyster pie/i });
+    const btnClickBeef3 = await screen.findByRole('heading', { name: /beef and oyster pie/i });
     expect(btnClickBeef3).toBeInTheDocument();
-    const btnClickBeef4 = await screen.getByRole('heading', {
+    const btnClickBeef4 = await screen.findByRole('heading', {
       name: /beef banh mi bowls with sriracha mayo, carrot & pickled cucumber/i,
     });
     expect(btnClickBeef4).toBeInTheDocument();
-    const btnClickBeef5 = await screen.getByRole('heading', { name: /beef bourguignon/i });
+    const btnClickBeef5 = await screen.findByRole('heading', { name: /beef bourguignon/i });
     expect(btnClickBeef5).toBeInTheDocument();
-    const btnClickBeef6 = await screen.getByRole('heading', { name: /beef brisket pot roast/i });
+    const btnClickBeef6 = await screen.findByRole('heading', { name: /beef brisket pot roast/i });
     expect(btnClickBeef6).toBeInTheDocument();
-    const btnClickBeef7 = await screen.getByRole('heading', { name: /beef dumpling stew/i });
+    const btnClickBeef7 = await screen.findByRole('heading', { name: /beef dumpling stew/i });
     expect(btnClickBeef7).toBeInTheDocument();
     const btnClickBeef8 = await screen.getByTestId('6-recipe-card');
     expect(btnClickBeef8).toBeInTheDocument();
@@ -99,5 +99,7 @@ describe('Testando Tela principal de receitas', () => {
     userEvent.click(ordinaryFilter);
 
     userEvent.click(allFilter);
+
+    expect(await screen.findByTestId('0-card-name')).toBeInTheDocument();
   });
 });
